@@ -134,8 +134,7 @@ fi
 
 # Compiling osmedeus
 cd /opt/osmedeus
-make
-make install
+go build
 
 if [ -f "/opt/osmedeus/osmedeus" ]; then
     cp /opt/osmedeus/osmedeus /usr/local/bin/osmedeus

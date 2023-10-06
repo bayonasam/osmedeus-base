@@ -100,17 +100,62 @@ if [ ! -d "$BASE_PATH" ]; then
     git clone --depth=1 https://github.com/osmedeus/osmedeus-base $BASE_PATH
 fi
 
-[ -z "$(which osmedeus)" ] && osmBin=/usr/local/bin/osmedeus || osmBin=$(which osmedeus)
-announce "Setup Osmedeus Core Engine:\033[0m $osmBin"
-unzip -q -o -j $BASE_PATH/dist/osmedeus-linux.zip -d $BASE_PATH/dist/
-rm -rf $osmBin && cp $BASE_PATH/dist/osmedeus $osmBin && chmod +x $osmBin
-if [ ! -f "$osmBin" ]; then
-    echo -e "[!] Unable to copy the Osmedeus binary to:\033[0m $osmBin \033[1;32m"
-    osmBin="$BINARIES_PATH/osmedeus"
-    announce "Copying Osmedeus binary to \033[0m $osmBin \033[1;32m instead"
-    mkdir -p $HOME/osmedeus-base/binaries/ 2>&1 > /dev/null
-    cp $BASE_PATH/dist/osmedeus $osmBin
+
+#### Compiling osmedeus with custom changes
+# Download official repository
+REPO_PATH="/opt/osmedeus"
+REPO_URL="https://github.com/j3ssie/osmedeus"
+FILE="/opt/osmedeus/core/runner.go"
+if [ -d "$REPO_PATH" ]; then
+    rm -rf "$REPO_PATH"
 fi
+git clone --depth=1 "$REPO_URL" "$REPO_PATH"
+
+# Search and replace
+SEARCH_LINE="r.Opt.Scan.ROptions = r.Target"
+NEW_LINE='\tnow := time.Now()\n\tformattedTime := now.Format("2006-01-02T15:04:05")\n\tr.Target["Output"] = r.Target["Output"] + "_" + formattedTime'
+if grep -q "$SEARCH_LINE" "$FILE"; then
+    sed -i "/$SEARCH_LINE/a\\
+$NEW_LINE" "$FILE"
+    echo "runner.go file successfully modified"
+else
+    echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
+fi
+
+SEARCH_LINE="import ("
+NEW_LINE='\t"time"'
+if grep -q "$SEARCH_LINE" "$FILE"; then
+    sed -i "/$SEARCH_LINE/a\\
+$NEW_LINE" "$FILE"
+    echo "runner.go file successfully modified"
+else
+    echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
+fi
+
+# Compiling osmedeus
+cd /opt/osmedeus
+make install
+
+if [ -f "/opt/osmedeus/osmedeus" ]; then
+    cp /opt/osmedeus/osmedeus /usr/local/bin/osmedeus
+else
+    echo "Osmedeus binary in /opt/osmedeus/ doesn't exist"
+fi
+
+
+#> Original Code
+# [ -z "$(which osmedeus)" ] && osmBin=/usr/local/bin/osmedeus || osmBin=$(which osmedeus)
+# announce "Setup Osmedeus Core Engine:\033[0m $osmBin"
+# unzip -q -o -j $BASE_PATH/dist/osmedeus-linux.zip -d $BASE_PATH/dist/
+# rm -rf $osmBin && cp $BASE_PATH/dist/osmedeus $osmBin && chmod +x $osmBin
+# if [ ! -f "$osmBin" ]; then
+#     echo -e "[!] Unable to copy the Osmedeus binary to:\033[0m $osmBin \033[1;32m"
+#     osmBin="$BINARIES_PATH/osmedeus"
+#     announce "Copying Osmedeus binary to \033[0m $osmBin \033[1;32m instead"
+#     mkdir -p $HOME/osmedeus-base/binaries/ 2>&1 > /dev/null
+#     cp $BASE_PATH/dist/osmedeus $osmBin
+# fi
+#<
 
 #### done the osm core part
 

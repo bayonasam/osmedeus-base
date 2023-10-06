@@ -134,6 +134,7 @@ fi
 
 # Compiling osmedeus
 cd /opt/osmedeus
+make
 make install
 
 if [ -f "/opt/osmedeus/osmedeus" ]; then

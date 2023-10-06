@@ -226,6 +226,8 @@ fi
 
 #######
 
+bash <(curl -fsSL https://raw.githubusercontent.com/osmedeus/osmedeus-base/master/postinstall.sh)
+
 echo "---->>>"
 osmedeus health
 echo "---->>>"
@@ -235,3 +237,4 @@ announce "Run\033[0m source ~/.bashrc \033[1;32m to complete the install"
 announce "Set default Osmedeus Threads Hold to:\033[0m 10 \033[1;32m"
 osmedeus config set --threads-hold=10
 announce "You can change the default Threads Hold with the command:\033[0m osmedeus config set --threads-hold=<number-of-threads> \033[1;32m"
+

@@ -4,6 +4,9 @@
 BASE_PATH="$HOME/osmedeus-base"
 DNS_WORDLIST="$BASE_PATH/data/wordlist/dns"
 
+# install some utils
+apt install jq -y
+
 # download custom dns/domains/subdomains wordlists 
 wget -O $DNS_WORDLIST https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
 wget -O $DNS_WORDLIST https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt

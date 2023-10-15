@@ -40,8 +40,17 @@ else
     echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
 fi
 
-echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Osmedeus binary compiled \033[0m"
-osmedeus health # check osmedeus
+# Compiling osmedeus
+cd /opt/osmedeus
+go build
+
+if [ -f "/opt/osmedeus/osmedeus" ]; then
+    cp /opt/osmedeus/osmedeus /usr/local/bin/osmedeus
+    echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Osmedeus binary compiled \033[0m"
+    osmedeus health # check osmedeus
+else
+    echo -e "\033[1;37m[\033[1;31m\!\033[1;37m]\033[1;31m Osmedeus binary in /opt/osmedeus/ does not exist \033[0m"
+fi
 
 
 echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Executing postinstall.sh script \033[0m"

@@ -33,7 +33,7 @@ You can check out the documentation at [**docs.osmedeus.org**](https://docs.osme
 > NOTE that you need some essential tools like `curl, wget, git, zip` and login as **root** to start
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/osmedeus/osmedeus-base/master/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/install.sh)
 ```
 
 ### Installation for MacOS (experimental)

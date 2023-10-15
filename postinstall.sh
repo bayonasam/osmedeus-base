@@ -2,7 +2,7 @@
 
 # global stuff
 BASE_PATH="$HOME/osmedeus-base"
-DNS_WORDLIST="$BASE_PATH/data/wordlists/dns"
+DNS_WORDLIST="$BASE_PATH/data/wordlists/dns/"
 
 # install some utils
 apt install jq -y

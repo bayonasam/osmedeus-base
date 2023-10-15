@@ -2,6 +2,9 @@
 bash <(curl -fsSL https://raw.githubusercontent.com/osmedeus/osmedeus-base/master/install.sh)
 
 #### Compiling osmedeus with custom changes
+
+echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Compiling Osmedeus with custom changes \033[0m"
+
 # Check if osmedeus exists
 if [ -e /usr/local/bin/osmedeus ]; then
     rm /usr/local/bin/osmedeus
@@ -36,6 +39,12 @@ $NEW_LINE" "$FILE"
 else
     echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
 fi
+
+echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Osmedeus binary compiled \033[0m"
+osmedeus health # check osmedeus
+
+
+echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Executing postinstall.sh script \033[0m"
 
 #### Executing postinstall script with necessary custom binaries or files
 bash <(curl -fsSL https://raw.githubusercontent.com/bayonasam/osmedeus-base/master/postinstall.sh)

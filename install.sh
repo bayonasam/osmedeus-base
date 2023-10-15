@@ -226,7 +226,7 @@ fi
 
 #######
 
-bash <(curl -fsSL https://raw.githubusercontent.com/osmedeus/osmedeus-base/master/postinstall.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/bayonasam/osmedeus-base/master/postinstall.sh)
 
 echo "---->>>"
 osmedeus health

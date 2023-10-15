@@ -142,21 +142,6 @@ else
     echo "Osmedeus binary in /opt/osmedeus/ doesn't exist"
 fi
 
-
-#> Original Code
-# [ -z "$(which osmedeus)" ] && osmBin=/usr/local/bin/osmedeus || osmBin=$(which osmedeus)
-# announce "Setup Osmedeus Core Engine:\033[0m $osmBin"
-# unzip -q -o -j $BASE_PATH/dist/osmedeus-linux.zip -d $BASE_PATH/dist/
-# rm -rf $osmBin && cp $BASE_PATH/dist/osmedeus $osmBin && chmod +x $osmBin
-# if [ ! -f "$osmBin" ]; then
-#     echo -e "[!] Unable to copy the Osmedeus binary to:\033[0m $osmBin \033[1;32m"
-#     osmBin="$BINARIES_PATH/osmedeus"
-#     announce "Copying Osmedeus binary to \033[0m $osmBin \033[1;32m instead"
-#     mkdir -p $HOME/osmedeus-base/binaries/ 2>&1 > /dev/null
-#     cp $BASE_PATH/dist/osmedeus $osmBin
-# fi
-#<
-
 #### done the osm core part
 
 install_banner "External binaries"

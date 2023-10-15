@@ -16,7 +16,6 @@ wget -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.com
 wget -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
 
 # Download scripts/binaries from repositories
-REPO_PATH="$HOME/osmedeus-base/binaries"
 function download_repo {
 REPO_NAME=$(echo "$1" | sed 's#.*/##') # Extract repository name
 REPO_NAME="${REPO_NAME%.git}" # Remove the .git extension if it exists

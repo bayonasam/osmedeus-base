@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# global stuff
+# Global stuff
 BASE_PATH="$HOME/osmedeus-base"
 DNS_WORDLIST="$BASE_PATH/data/wordlists/dns"
+REPO_PATH="$HOME/osmedeus-base/binaries/"
 
-# install some utils
+# Install some utils
 apt install jq -y
 
-# download custom dns/domains/subdomains wordlists 
+# Download custom dns/domains/subdomains wordlists 
 wget -O "$DNS_WORDLIST/2m-subdomains.txt" https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
 wget -O "$DNS_WORDLIST/best-dns-wordlist.txt" https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt
 wget -O "$DNS_WORDLIST/httparchive_html_htm_2023_08_28.txt" https://wordlists-cdn.assetnote.io/data/automated/httparchive_html_htm_2023_08_28.txt

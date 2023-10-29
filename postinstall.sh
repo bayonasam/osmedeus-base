@@ -15,7 +15,7 @@ wget -O "$DNS_WORDLIST/httparchive_html_htm_2023_08_28.txt" https://wordlists-cd
 wget -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-spanish.txt
 wget -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
 
-# Download scripts/binaries from repositories
+# Function to download git repositories removing previous versions
 function download_repo {
 REPO_NAME=$(echo "$1" | sed 's#.*/##') # Extract repository name
 REPO_NAME="${REPO_NAME%.git}" # Remove the .git extension if it exists

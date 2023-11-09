@@ -6,7 +6,8 @@ DNS_WORDLIST="$BASE_PATH/data/wordlists/dns"
 REPO_PATH="$HOME/osmedeus-base/binaries"
 
 # Install some utils
-apt install jq -y
+apt update -y
+apt install jq golang-go -y
 
 # Download custom dns/domains/subdomains wordlists 
 wget -O "$DNS_WORDLIST/2m-subdomains.txt" https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
@@ -29,8 +30,8 @@ git clone --depth=1 "$1" "$REPO_NAME"
 download_repo "https://github.com/initstring/linkedin2username"
 pip3 install -r "$REPO_NAME/requirements.txt"
 
-
-
+# Compile waybackurls@latest
+GOBIN=/root/osmedeus-base/binaries go install github.com/tomnomnom/waybackurls@latest
 
 
 

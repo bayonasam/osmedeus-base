@@ -39,6 +39,8 @@ wget -q -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubu
 # Download and install some tools
 announce_banner "Installing waybackurls"
 GOBIN=$BINARY_PATH go install github.com/tomnomnom/waybackurls@latest
+announce_banner "Installing shosubgo"
+GOBIN=/root/osmedeus-base/binaries go install github.com/incogbyte/shosubgo@latest
 
 download_repo "https://github.com/initstring/linkedin2username"
 pip3 install -r "$REPO_NAME/requirements.txt"

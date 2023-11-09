@@ -3,37 +3,45 @@
 # Global stuff
 BASE_PATH="$HOME/osmedeus-base"
 DNS_WORDLIST="$BASE_PATH/data/wordlists/dns"
-REPO_PATH="$HOME/osmedeus-base/binaries"
+BINARY_PATH="$HOME/osmedeus-base/binaries"
 
-# Install some utils
-apt update -y
-apt install jq golang-go -y
-
-# Download custom dns/domains/subdomains wordlists 
-wget -O "$DNS_WORDLIST/2m-subdomains.txt" https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
-wget -O "$DNS_WORDLIST/best-dns-wordlist.txt" https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt
-wget -O "$DNS_WORDLIST/httparchive_html_htm_2023_08_28.txt" https://wordlists-cdn.assetnote.io/data/automated/httparchive_html_htm_2023_08_28.txt
-wget -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-spanish.txt
-wget -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
+announce_banner() {
+    echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m $1 \033[0m"
+}
 
 # Function to download git repositories removing previous versions
 function download_repo {
 REPO_NAME=$(echo "$1" | sed 's#.*/##') # Extract repository name
 REPO_NAME="${REPO_NAME%.git}" # Remove the .git extension if it exists
-REPO_NAME="$REPO_PATH/$REPO_NAME"
+REPO_NAME="$BINARY_PATH/$REPO_NAME"
 if [ -d "$REPO_NAME" ]; then
     rm -rf "$REPO_NAME"
 fi
 git clone --depth=1 "$1" "$REPO_NAME"
 }
 
+
+# Install some utils
+announce_banner "Running apt update"
+apt update -y -qq
+announce_banner "Installing some utils"
+apt install jq golang-go -y
+
+# Download custom dns/domains/subdomains wordlists
+announce_banner "Downloading custom dns/domains/subdomains wordlists"
+
+wget -q -O "$DNS_WORDLIST/2m-subdomains.txt" https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
+wget -q -O "$DNS_WORDLIST/best-dns-wordlist.txt" https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt
+wget -q -O "$DNS_WORDLIST/httparchive_html_htm_2023_08_28.txt" https://wordlists-cdn.assetnote.io/data/automated/httparchive_html_htm_2023_08_28.txt
+wget -q -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-spanish.txt
+wget -q -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
+
+# Download and install some tools
+announce_banner "Installing waybackurls"
+GOBIN=$BINARY_PATH go install github.com/tomnomnom/waybackurls@latest
+
 download_repo "https://github.com/initstring/linkedin2username"
 pip3 install -r "$REPO_NAME/requirements.txt"
-
-# Compile waybackurls@latest
-GOBIN=/root/osmedeus-base/binaries go install github.com/tomnomnom/waybackurls@latest
-
-
 
 
 

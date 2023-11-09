@@ -40,6 +40,12 @@ else
     echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
 fi
 
+
+# Downloading modified main.go and load_variables.go
+wget -q -O "$REPO_PATH/main.go" https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/main.go
+wget -q -O "$REPO_PATH/core/load_variables.go" https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/load_variables.go
+
+
 # Compiling osmedeus
 cd /opt/osmedeus
 go build

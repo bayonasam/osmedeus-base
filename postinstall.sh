@@ -25,7 +25,7 @@ git clone -q --depth=1 "$1" "$REPO_NAME"
 announce_banner "Running apt update"
 apt update -y -qq
 announce_banner "Installing some utils"
-apt-get install -qq -y jq golang-go
+apt-get install -qq -y jq golang-go pipenv
 
 # Download custom dns/domains/subdomains wordlists
 announce_banner "Downloading custom dns/domains/subdomains wordlists"

@@ -17,7 +17,7 @@ REPO_NAME="$BINARY_PATH/$REPO_NAME"
 if [ -d "$REPO_NAME" ]; then
     rm -rf "$REPO_NAME"
 fi
-git clone --depth=1 "$1" "$REPO_NAME"
+git clone -q --depth=1 "$1" "$REPO_NAME"
 }
 
 

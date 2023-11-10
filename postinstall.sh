@@ -17,7 +17,7 @@ REPO_NAME="$BINARY_PATH/$REPO_NAME"
 if [ -d "$REPO_NAME" ]; then
     rm -rf "$REPO_NAME"
 fi
-git clone -q --depth=1 "$1" "$REPO_NAME"
+git clone -q --recursive "$1" "$REPO_NAME"
 }
 
 
@@ -55,7 +55,5 @@ announce_banner "Installing Sudomy"
 download_repo "https://github.com/screetsec/Sudomy.git"
 cd $BINARY_PATH/Sudomy
 pipenv --python 3 && pipenv install
-
-
 
 

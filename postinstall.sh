@@ -46,9 +46,10 @@ GOBIN=/root/osmedeus-base/binaries go install github.com/incogbyte/shosubgo@late
 announce_banner "Installing github-subdomains"
 GOBIN=/root/osmedeus-base/binaries go install github.com/gwen001/github-subdomains@latest
 
-
-#download_repo "https://github.com/initstring/linkedin2username"
-#pip3 install -r "$REPO_NAME/requirements.txt"
+announce_banner "Installing censys-subdomain-finder"
+download_repo "https://github.com/christophetd/censys-subdomain-finder.git"
+cd $BINARY_PATH/censys-subdomain-finder
+pipenv --python 3 && pipenv install
 
 
 

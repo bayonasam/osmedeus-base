@@ -51,6 +51,10 @@ download_repo "https://github.com/christophetd/censys-subdomain-finder.git"
 cd $BINARY_PATH/censys-subdomain-finder
 pipenv --python 3 && pipenv install
 
+announce_banner "Installing Sudomy"
+download_repo "https://github.com/screetsec/Sudomy.git"
+cd $BINARY_PATH/Sudomy
+pipenv --python 3 && pipenv install
 
 
 

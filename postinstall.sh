@@ -25,7 +25,9 @@ git clone -q --recursive "$1" "$REPO_NAME"
 announce_banner "Running apt update"
 apt update -y -qq
 announce_banner "Installing some utils"
-apt-get install -qq -y jq golang-go pipenv
+apt-get install -qq -y jq golang-go pipenv python3-pip python3-venv
+
+python3 -m pip install --user pipx && python3 -m pipx ensurepath
 
 # Download custom dns/domains/subdomains wordlists
 announce_banner "Downloading custom dns/domains/subdomains wordlists"
@@ -56,4 +58,5 @@ download_repo "https://github.com/screetsec/Sudomy.git"
 cd $BINARY_PATH/Sudomy
 pipenv --python 3 && pipenv install
 
-
+announce_banner "Installing Bbot"
+python3 -m pipx install bbot

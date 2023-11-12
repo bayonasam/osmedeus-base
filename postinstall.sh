@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Global stuff
+SCRIPT_PATH=$(realpath $(dirname "$0"))
 BASE_PATH="$HOME/osmedeus-base"
 DNS_WORDLIST="$BASE_PATH/data/wordlists/dns"
 BINARY_PATH="$HOME/osmedeus-base/binaries"
@@ -39,6 +40,9 @@ wget -q -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.
 wget -q -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
 
 # Download and install some tools
+announce_banner "Copying binaries and scripts from binaries folder"
+cp $SCRIPT_PATH/binaries/* $BINARY_PATH/
+
 announce_banner "Installing waybackurls"
 GOBIN=$BINARY_PATH go install github.com/tomnomnom/waybackurls@latest
 
@@ -60,3 +64,4 @@ pipenv --python 3 && pipenv install
 
 announce_banner "Installing Bbot"
 python3 -m pipx install bbot
+

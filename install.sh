@@ -13,31 +13,21 @@ fi
 # Download official repository
 REPO_PATH="/opt/osmedeus"
 REPO_URL="https://github.com/j3ssie/osmedeus"
-FILE="/opt/osmedeus/core/runner.go"
 if [ -d "$REPO_PATH" ]; then
     rm -rf "$REPO_PATH"
 fi
 git clone --depth=1 "$REPO_URL" "$REPO_PATH"
 
-# Search and replace
-SEARCH_LINE="r.Opt.Scan.ROptions = r.Target"
-NEW_LINE='\tnow := time.Now()\n\tformattedTime := now.Format("2006-01-02T15:04:05")\n\tr.Target["Output"] = r.Target["Output"] + "_" + formattedTime'
-if grep -q "$SEARCH_LINE" "$FILE"; then
-    sed -i "/$SEARCH_LINE/a\\
-$NEW_LINE" "$FILE"
-    echo "runner.go file successfully modified"
-else
-    echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
-fi
 
-SEARCH_LINE="import ("
-NEW_LINE='\t"time"'
+# Search and replace
+FILE="/opt/osmedeus/core/parse.go"
+SEARCH_LINE='ROptions["Binaries"] = options.Env.BinariesFolder'
+NEW_LINE='ROptions["Targets"] = options.Scan.InputList'
 if grep -q "$SEARCH_LINE" "$FILE"; then
-    sed -i "/$SEARCH_LINE/a\\
-$NEW_LINE" "$FILE"
-    echo "runner.go file successfully modified"
+    sed -i "/$SEARCH_LINE/a\\$NEW_LINE" "$FILE"
+    echo "$FILE file successfully modified"
 else
-    echo "The line \"$SEARCH_LINE\" was not found in the file \"$NEW_LINE\"."
+    echo "The line \"$SEARCH_LINE\" was not found in the file \"$FILE\"."
 fi
 
 
@@ -47,8 +37,7 @@ wget -q -O "$REPO_PATH/core/load_variables.go" https://raw.githubusercontent.com
 
 
 # Compiling osmedeus
-cd /opt/osmedeus
-go build
+cd /opt/osmedeus && go build
 
 if [ -f "/opt/osmedeus/osmedeus" ]; then
     cp /opt/osmedeus/osmedeus /usr/local/bin/osmedeus

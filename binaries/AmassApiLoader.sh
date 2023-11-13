@@ -8,7 +8,7 @@
 # replaces occurrences of that variable name in the file with its corresponding value from the environment. This ensures
 # that Amass is executed with the current API tokens and settings defined in the environment.
 
-# Define paths for the original and new configuration files.
+# Define paths for the original and new datasources files.
 ORIGINAL_CONFIG_FILE="/root/osmedeus-base/data/amass-config/datasources.yaml"
 NEW_CONFIG_FILE="/root/osmedeus-base/data/amass-config/datasources_token.yaml"
 

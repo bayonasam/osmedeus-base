@@ -21,10 +21,10 @@ git clone --depth=1 "$REPO_URL" "$REPO_PATH"
 
 # Search and replace
 FILE="/opt/osmedeus/core/parse.go"
-SEARCH_LINE='ROptions["Binaries"] = options.Env.BinariesFolder'
-NEW_LINE='ROptions["Targets"] = options.Scan.InputList'
+SEARCH_LINE='ROptions\["Binaries"\] = options.Env.BinariesFolder'
+NEW_LINE='\tROptions\["Targets"\] = options.Scan.InputList'
 if grep -q "$SEARCH_LINE" "$FILE"; then
-    sed -i "/$SEARCH_LINE/a\\$NEW_LINE" "$FILE"
+    sed -i "/$SEARCH_LINE/a\\$NEW_LINE" "$FILE" 
     echo "$FILE file successfully modified"
 else
     echo "The line \"$SEARCH_LINE\" was not found in the file \"$FILE\"."

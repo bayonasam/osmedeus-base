@@ -10,7 +10,7 @@
 
 # Define paths for the original and new datasources files.
 ORIGINAL_CONFIG_FILE="/root/osmedeus-base/data/amass-config/datasources.yaml"
-NEW_CONFIG_FILE="/root/osmedeus-base/data/amass-config/datasources_token.yaml"
+NEW_CONFIG_FILE="/root/osmedeus-base/data/amass-config/datasources_custom.yaml"
 
 # Check if the original configuration file exists.
 if [ ! -f "$ORIGINAL_CONFIG_FILE" ]; then

@@ -73,7 +73,7 @@ announce_banner "Downloading Amass 3.32.3"
 wget -q -O "$BINARY_PATH/amass.zip" https://github.com/owasp-amass/amass/releases/download/v3.23.3/amass_Linux_amd64.zip
 unzip -qq "$BINARY_PATH/amass.zip" -d $BINARY_PATH
 mv $BINARY_PATH/amass_Linux_amd64/amass $BINARY_PATH
-rm -rf $BINARY_PATH/amass_Linux_amd64/
+rm -rf $BINARY_PATH/amass_Linux_amd64/ && rm -rf $BINARY_PATH/amass.zip
 
 
 

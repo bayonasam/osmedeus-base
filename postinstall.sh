@@ -40,7 +40,7 @@ wget -q -O "$DNS_WORDLIST/subdomains-spanish.txt" https://raw.githubusercontent.
 wget -q -O "$DNS_WORDLIST/subdomains-top1million-110000.txt" https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
 
 # Download and install some tools
-announce_banner "Copying binaries and scripts from binaries folder"
+announce_banner "Copying binaries and scripts from binaries folder to $BINARY_PATH"
 cp $SCRIPT_PATH/binaries/* $BINARY_PATH/
 
 announce_banner "Installing waybackurls"
@@ -64,4 +64,18 @@ pipenv --python 3 && pipenv install
 
 announce_banner "Installing Bbot"
 python3 -m pipx install bbot
+
+announce_banner "Renaming Amass to Amass4"
+mv $BINARY_PATH/amass $BINARY_PATH/amass4
+
+announce_banner "Downloading Amass 3.32.3"
+# After several tests amass 3 finishes passive enumeration in seconds while amass 4 freezes.
+wget -q -O "$BINARY_PATH/amass.zip" https://github.com/owasp-amass/amass/releases/download/v3.23.3/amass_Linux_amd64.zip
+unzip -qq "$BINARY_PATH/amass.zip" -d $BINARY_PATH
+mv $BINARY_PATH/amass_Linux_amd64/amass $BINARY_PATH
+rm -rf $BINARY_PATH/amass_Linux_amd64/
+
+
+
+
 

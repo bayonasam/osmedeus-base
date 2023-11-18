@@ -1,0 +1,23 @@
+name: rt_ext_recon
+desc: Running default reconnaissance routine
+type: rt_ext_recon
+validator: domain
+
+usage: |
+    # Run rt_ext_recon workflow againts one domain
+    osmedeus scan -f rt_ext_recon -t domain.tld --params 'Company=<COMPANY_NAME>'
+        ex: osmedeus scan -f rt_ext_recon -t tesla.com --params 'Company=TESLA'
+    
+    # Run rt_ext_recon workflow againts a list of domains and excluding a module
+    osmedeus scan -f rt_ext_recon -T <file_with_domains> -x <module_to_exclude> --params 'Company=<COMPANY_NAME>'
+        ex: osmedeus scan -f rt_ext_recon -T /tmp/domains.txt -x another_module --params 'Company=TESLA'
+    
+    # Run rt_ext_recon workflow againts a list of domains and overwriting timeouts of Amass and gau
+    osmedeus scan -f rt_ext_recon -T <file_with_domains> --params 'Company=<COMPANY_NAME>,AmassTimeout=<time>,BbotTimeout=<time>'
+        ex: osmedeus scan -f rt_ext_recon -T /tmp/domains.txt --params 'Company=TESLA,AmassTimeout=2h,GauTimeout=40m'
+
+routines:
+  - modules:
+      - passive_subdomain
+  - modules:
+      - another_module

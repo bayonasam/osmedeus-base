@@ -1,0 +1,46 @@
+name: passive subdomain 
+desc: Scanning for subdomain using passive techniques
+
+pre_run:
+  - CreateFolder("{{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/")
+  - CreateFolder("{{Workspaces}}/{{Company}}_{{Date}}/logs/")
+  - ExecCmd("/bin/bash {{Data}}/amass-config/AmassApiLoader.sh") # Load apis on amass config file config-api.ini
+  
+
+params:
+  - subfinderThreads: "{{threads * 3}}"
+  - AmassTimeout: "30m"
+  - GauTimeout: "30m"
+
+steps:
+  - commands: # These commands will run in parallel
+    # crt.sh queries
+    - crt=true; while [ "$crt" = "true" ]; do output=$(curl -s "https://crt.sh/?q=%25.{{Target}}"); if ! echo "$output" | grep -q 'crt.sh | ERROR!'; then echo $output | grep -oE "[\.a-zA-Z0-9-]+\.{{Target}}" | sort -u >> {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-crtsh.txt; crt=false; fi; done
+    # rapiddns.io queries
+    - curl -s "https://rapiddns.io/subdomain/{{Target}}?full=1" | grep -oE "[\.a-zA-Z0-9-]+\.{{Target}}" | sort -u >> {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-rapiddns.txt
+    # Subfinder
+    - "{{Binaries}}/subfinder -d {{Target}} -t {{subfinderThreads}} -all -silent -o {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-subfinder.txt"
+    # Waybackurls
+    - "{{Binaries}}/waybackurls {{Target}} | {{Binaries}}/unfurl -u domains >> {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-waybackurls.txt"
+    # shosubgo (shodan queries)
+    - "{{Binaries}}/shosubgo -d {{Target}} -s ${shodan_api_token} | sort -u >> {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-shosubgo.txt"
+    # github-subdomains
+    - "{{Binaries}}/github-subdomains -d {{Target}} -t ${github_token} -raw -o {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-github-subdomains.txt"
+    # findomain
+    - findomain_fb_token=${facebook_api_token} findomain_virustotal_token=${virustotal_api_token} findomain_securitytrails_token=${securitytrails_api_token} {{Binaries}}/findomain -t {{Target}} -u {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-findomain.txt
+    # censys-subdomain-finder
+    - cd {{Binaries}}/censys-subdomain-finder && pipenv run python3 censys-subdomain-finder.py --censys-api-id ${censys_api_id} --censys-api-secret ${censys_api_secret} {{Target}} -o {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-censys-subdomain-finder.txt
+    # Sudomy
+    - "cd {{Binaries}}/Sudomy && SHODAN_API=${shodan_api_token} VIRUSTOTAL=${virustotal_api_token} BINARYEDGE=${binaryedge_api_token} SECURITY_TRAILS=${securitytrails_api_token} pipenv run ./sudomy -d {{Target}} --no-probe -o /tmp/Sudomy/output && mv /tmp/Sudomy/output/Sudomy-Output/{{Target}}/subdomain.txt {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-sudomy.txt && rm -rf /tmp/Sudomy/output"
+  - commands: # These commands will run in parallel
+    # Amass
+    - timeout -k 1m {{AmassTimeout}} {{Binaries}}/amass enum -passive -d {{Target}} -config {{Data}}/amass-config/config-api.ini -json /tmp/{{Workspace}}-amass.txt && cat /tmp/{{Workspace}}-amass.txt | jq -r '.name' | sort -u > {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-amass.txt && rm /tmp/{{Workspace}}-amass.txt
+    # gau
+    - timeout -k 1m {{GauTimeout}} {{Binaries}}/gau --subs {{Target}} | {{Binaries}}/unfurl -u domains >> {{Workspaces}}/{{Company}}_{{Date}}/passive_subdomain/{{Workspace}}-gau.txt
+
+
+
+post_run:
+    # Move folder with logs to {{Workspaces}}/{{Company}}_{{Date}}/logs
+  - ExecCmdWithOutput("mv {{Output}} {{Workspaces}}/{{Company}}_{{Date}}/logs/{{Workspace}}_{{Date}}")
+

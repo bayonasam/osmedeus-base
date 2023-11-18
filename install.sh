@@ -19,7 +19,7 @@ fi
 git clone --depth=1 "$REPO_URL" "$REPO_PATH"
 
 
-# Search and replace
+# Search and add new line
 FILE="/opt/osmedeus/core/parse.go"
 SEARCH_LINE='ROptions\["Binaries"\] = options.Env.BinariesFolder'
 NEW_LINE='\tROptions\["Targets"\] = options.Scan.InputList'
@@ -29,7 +29,6 @@ if grep -q "$SEARCH_LINE" "$FILE"; then
 else
     echo "The line \"$SEARCH_LINE\" was not found in the file \"$FILE\"."
 fi
-
 
 # Downloading modified main.go and load_variables.go
 wget -q -O "$REPO_PATH/main.go" https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/main.go

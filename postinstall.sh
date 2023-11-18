@@ -21,6 +21,16 @@ fi
 git clone -q --recursive "$1" "$REPO_NAME"
 }
 
+# Copy files inside binaries to /root/osmedeus-base/binaries
+announce_banner "Copying Binaries to /root/osmedeus-base/binaries"
+cp $SCRIPT_PATH/binaries/* $BINARY_PATH/
+
+# Copy amass-config to /root/osmedeus-base/data/amass-config
+announce_banner "Copying amass-config to /root/osmedeus-base/data/amass-config"
+cp $SCRIPT_PATH/amass-config/* /root/osmedeus-base/data/amass-config/
+
+# Copy Custom Workflows and Modules to /root/osmedeus-base/workflow
+cp -r $SCRIPT_PATH/workflow/* /root/osmedeus-base/workflow/
 
 # Install some utils
 announce_banner "Running apt update"
@@ -78,11 +88,5 @@ unzip -qq "$BINARY_PATH/amass.zip" -d $BINARY_PATH
 mv $BINARY_PATH/amass_Linux_amd64/amass $BINARY_PATH
 rm -rf $BINARY_PATH/amass_Linux_amd64/ && rm -rf $BINARY_PATH/amass.zip
 
-# Copy files inside binaries to /root/osmedeus-base/binaries
-announce_banner "Copying Binaries to /root/osmedeus-base/binaries"
-cp $SCRIPT_PATH/binaries/* $BINARY_PATH/
 
-# Copy amass-config to /root/osmedeus-base/data/amass-config
-announce_banner "Copying amass-config to /root/osmedeus-base/data/amass-config"
-cp $SCRIPT_PATH/amass-config/* /root/osmedeus-base/data/amass-config
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SCRIPT_PATH=$(realpath $(dirname "$0"))
 
 #### Installing osmedeus-base and all the stuff

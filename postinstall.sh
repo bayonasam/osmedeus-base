@@ -28,11 +28,11 @@ apt update -y -qq
 announce_banner "Installing some utils"
 apt-get install -qq -y jq golang-go pipenv python3-pip python3-venv
 
+# Install pipx
 python3 -m pip install --user pipx && python3 -m pipx ensurepath
 
 # Download custom dns/domains/subdomains wordlists
 announce_banner "Downloading custom dns/domains/subdomains wordlists"
-
 wget -q -O "$DNS_WORDLIST/2m-subdomains.txt" https://wordlists-cdn.assetnote.io/data/manual/2m-subdomains.txt
 wget -q -O "$DNS_WORDLIST/best-dns-wordlist.txt" https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt
 wget -q -O "$DNS_WORDLIST/httparchive_html_htm_2023_08_28.txt" https://wordlists-cdn.assetnote.io/data/automated/httparchive_html_htm_2023_08_28.txt
@@ -65,6 +65,9 @@ pipenv --python 3 && pipenv install
 announce_banner "Installing Bbot"
 python3 -m pipx install bbot
 
+# It has been detected that amass in version 4 does not complete its execution in passive mode,
+# and it produces significantly fewer results than version 3, which finishes in less than a minute. 
+# As long as version 4 has this issue, version 3 of amass will be used.
 announce_banner "Renaming Amass to Amass4"
 mv $BINARY_PATH/amass $BINARY_PATH/amass4
 
@@ -75,7 +78,11 @@ unzip -qq "$BINARY_PATH/amass.zip" -d $BINARY_PATH
 mv $BINARY_PATH/amass_Linux_amd64/amass $BINARY_PATH
 rm -rf $BINARY_PATH/amass_Linux_amd64/ && rm -rf $BINARY_PATH/amass.zip
 
+# Copy files inside binaries to /root/osmedeus-base/binaries
+announce_banner "Copying Binaries to /root/osmedeus-base/binaries"
+cp $SCRIPT_PATH/binaries/* $BINARY_PATH/
 
-
-
+# Copy amass-config to /root/osmedeus-base/data/amass-config
+announce_banner "Copying amass-config to /root/osmedeus-base/data/amass-config"
+cp $SCRIPT_PATH/amass-config/* /root/osmedeus-base/data/amass-config
 

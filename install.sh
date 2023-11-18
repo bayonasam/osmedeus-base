@@ -1,4 +1,7 @@
+SCRIPT_PATH=$(realpath $(dirname "$0"))
+
 #### Installing osmedeus-base and all the stuff
+
 bash <(curl -fsSL https://raw.githubusercontent.com/osmedeus/osmedeus-base/master/install.sh)
 
 #### Compiling osmedeus with custom changes
@@ -31,23 +34,24 @@ else
 fi
 
 # Downloading modified main.go and load_variables.go
-wget -q -O "$REPO_PATH/main.go" https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/main.go
-wget -q -O "$REPO_PATH/core/load_variables.go" https://raw.githubusercontent.com/bayonasam/osmedeus-base/main/load_variables.go
+cp $SCRIPT_PATH/osmedeus_code/main.go "$REPO_PATH/main.go"
+cp $SCRIPT_PATH/osmedeus_code/load_variables.go "$REPO_PATH/core/load_variables.go"
 
 
 # Compiling osmedeus
-cd /opt/osmedeus && go build
+cd $REPO_PATH && go build
 
-if [ -f "/opt/osmedeus/osmedeus" ]; then
-    cp /opt/osmedeus/osmedeus /usr/local/bin/osmedeus
+if [ -f "$REPO_PATH/osmedeus" ]; then
+    cp $REPO_PATH/osmedeus /usr/local/bin/osmedeus
     echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Osmedeus binary compiled \033[0m"
     osmedeus health # check osmedeus
 else
-    echo -e "\033[1;37m[\033[1;31m\!\033[1;37m]\033[1;31m Osmedeus binary in /opt/osmedeus/ does not exist \033[0m"
+    echo -e "\033[1;37m[\033[1;31m\!\033[1;37m]\033[1;31m Osmedeus binary in $REPO_PATH does not exist \033[0m"
 fi
 
 
 echo -e "\033[1;37m[\033[1;34m+\033[1;37m]\033[1;32m Executing postinstall.sh script \033[0m"
 
 #### Executing postinstall script with necessary custom binaries or files
-bash <(curl -fsSL https://raw.githubusercontent.com/bayonasam/osmedeus-base/master/postinstall.sh)
+/bin/bash $SCRIPT_PATH/postinstall.sh
+
